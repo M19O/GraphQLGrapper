@@ -50,7 +50,7 @@ class BurpExtender(IBurpExtender, IContextMenuFactory, ActionListener):
                 f.write(func + "\n\n")
 
         print("[+] Extracted GraphQL function structures saved to {}".format(output_path))
-
+        
     def extract_graphql_structure(self, query):
         """Extract structured GraphQL function details."""
         function_structure = []
@@ -62,7 +62,7 @@ class BurpExtender(IBurpExtender, IContextMenuFactory, ActionListener):
             line = line.strip()
 
             # Capture query or mutation
-            match = re.match(r"^(query|mutation)\s+(\w+)", line)
+            match = re.match(r"^(query|mutation|subscription)\s+(\w+)", line)
             if match:
                 operation_type, function_name = match.groups()
                 function_structure.append("{} {} (".format(operation_type, function_name))
