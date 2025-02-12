@@ -49,7 +49,8 @@ class BurpExtender(IBurpExtender, IContextMenuFactory, ActionListener):
             for func in graphql_functions:
                 f.write(func + "\n\n")
 
-        print(f"[+] Extracted GraphQL function structures saved to {output_path}")
+        print("[+] Extracted GraphQL function structures saved to {}".format(output_path))
+
     def extract_graphql_structure(self, query):
         """Extract structured GraphQL function details."""
         function_structure = []
