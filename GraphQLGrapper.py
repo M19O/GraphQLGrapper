@@ -3,6 +3,7 @@ from javax.swing import JMenuItem
 from java.awt.event import ActionListener  # Fix here
 import json
 import re
+import os
 
 class BurpExtender(IBurpExtender, IContextMenuFactory, ActionListener):
 
@@ -28,7 +29,7 @@ class BurpExtender(IBurpExtender, IContextMenuFactory, ActionListener):
             body_bytes = message.getRequest()[request_info.getBodyOffset():]
             body = body_bytes.tostring()
 
-            if method == "POST" and ("graphql" in url or "query" in body):
+            if (method == "POST" or method == "GET") and ("graphql" in url or "query" in body):
                 try:
                     json_body = json.loads(body)
                     query = json_body.get("query", "")
@@ -43,12 +44,12 @@ class BurpExtender(IBurpExtender, IContextMenuFactory, ActionListener):
                     pass  # Ignore non-JSON bodies
 
         # Save GraphQL structures to a file
-        with open("/home/kali/graphql_functions_structure.txt", "w") as f:
+        output_path = os.path.expanduser("~/graphql_functions_structure.txt")
+        with open(output_path, "w") as f:
             for func in graphql_functions:
                 f.write(func + "\n\n")
 
-        print("[+] Extracted GraphQL function structures saved to /home/kali/graphql_functions_structure.txt")
-
+        print(f"[+] Extracted GraphQL function structures saved to {output_path}")
     def extract_graphql_structure(self, query):
         """Extract structured GraphQL function details."""
         function_structure = []
